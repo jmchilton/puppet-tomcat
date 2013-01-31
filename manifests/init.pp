@@ -17,10 +17,15 @@ class tomcat(
 
 define tomcat::deployment($path) {
   include tomcat
-
-  file { "/var/lib/tomcat6/webapps/${name}.war":
-    owner  => 'root',
-    source => $path,
+ 
+  exec { "wget-war-$name":
+    command => "/usr/bin/wget --output-document=/var/lib/tomcat6/webapps/${name}.war $path",
+    creates => "$destination",
   }
+  
+  #file { "/var/lib/tomcat6/webapps/${name}.war":
+  #  owner  => 'root',
+  #  source => $path,
+  #}
 
 }
